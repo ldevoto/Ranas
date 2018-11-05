@@ -1,7 +1,7 @@
 from terreno import Terreno
 from direccion import Derecha, Izquierda
 from ranas import Rana
-from threading import Lock
+from threading import Lock, Semaphore
 from colorama import init
 import os
 
@@ -20,13 +20,15 @@ if __name__ == '__main__':
         cantidadD = int(input("Ingrese cantidad de Ranas para el lado derecho: "))
         cantidadI = int(input("Ingrese cantidad de Ranas para el lado izquierdo: "))
     terreno = Terreno()
+    permiso_escritura = Semaphore(1)
+    permiso_lectura = Semaphore(cantidadD + cantidadI)
     for i in range(cantidadI):
-        rana = Rana(slots_lock, 'Rana Izquierda {}'.format(i+1), i, Derecha(), terreno, DEBUG)
+        rana = Rana(permiso_lectura, permiso_escritura, cantidadD + cantidadI, 'Rana Izquierda {}'.format(i+1), i, Derecha(), terreno, DEBUG)
         ranas.append(rana)
         terreno.agregar_rana(rana)
     
     for i in range(cantidadD):
-        rana = Rana(slots_lock, 'Rana Derecha {}'.format(i+1), i, Izquierda(), terreno, DEBUG)
+        rana = Rana(permiso_lectura, permiso_escritura, cantidadD + cantidadI, 'Rana Derecha {}'.format(i+1), i, Izquierda(), terreno, DEBUG)
         ranas.append(rana)
         terreno.agregar_rana(rana)
 

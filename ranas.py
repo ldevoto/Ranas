@@ -3,9 +3,11 @@ from time import sleep
 from colorama import Fore
 
 class Rana(Thread):
-    def __init__(self, lock, nombre, id, direccion, terreno, debug):
+    def __init__(self, permiso_lectura, permiso_esritura, cantidad, nombre, id, direccion, terreno, debug):
         super().__init__(name=nombre)
-        self.lock = lock
+        self.permiso_lectura = permiso_lectura
+        self.permiso_escritura = permiso_esritura
+        self.cantidad = cantidad
         self.id = id
         self.direccion = direccion
         self.terreno = terreno
@@ -16,31 +18,21 @@ class Rana(Thread):
     
     def run(self):
         while (not self.finalizo):
-            self.lock.acquire()
-            if (self.ultra_debug):
-                print('--{} fue habilitada para ejecutar'.format(self.name))
-                print('No debería haber ninguna interrupcion en este flujo de texto')
-                print('Chequeando si le corresponde avanzar..')
-            if (self.tiene_que_avanzar()):
-                if (self.ultra_debug):
-                    print('Le corresponde avanzar')
+            self.permiso_lectura.acquire()
+            avanza = self.tiene_que_avanzar()
+            self.permiso_lectura.release()
+            if (avanza):
+                self.permiso_escritura.acquire()
+                for i in range(self.cantidad):
+                    self.permiso_lectura.acquire()
                 self.avanzar()
-                if (self.ultra_debug):
-                    print('Avanzó')
-                    print('Chequeando si llegó al final..')
+                for i in range(self.cantidad):
+                    self.permiso_lectura.release()
+                self.permiso_escritura.release()
+                self.permiso_lectura.acquire()
                 if (self.termino()):
-                    if (self.ultra_debug):
-                        print('Llegó al final. La Rana debe morir!')
                     self.marcar_fin()
-                else:
-                    if (self.ultra_debug):
-                        print('Todavía no le llegó la hora')
-            else:
-                if (self.ultra_debug):
-                    print('No le corresponde avanzar')
-            if (self.ultra_debug):
-                print('Liberando el lock..')
-            self.lock.release()
+                self.permiso_lectura.release()
         if (self.debug):
             print('{} finalizó'.format(self.name))
 

@@ -140,3 +140,6 @@ class Terreno:
     
     def get_cantidad_movidas(self):
         return self.cantidad_movidas
+    
+    def get_cantidad_ranas(self):
+        return len(self.slotsDerechos + self.slotsIzquierdos)
