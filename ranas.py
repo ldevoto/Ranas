@@ -17,29 +17,10 @@ class Rana(Thread):
     def run(self):
         while (not self.finalizo):
             self.lock.acquire()
-            if (self.ultra_debug):
-                print('--{} fue habilitada para ejecutar'.format(self.name))
-                print('No debería haber ninguna interrupcion en este flujo de texto')
-                print('Chequeando si le corresponde avanzar..')
             if (self.tiene_que_avanzar()):
-                if (self.ultra_debug):
-                    print('Le corresponde avanzar')
                 self.avanzar()
-                if (self.ultra_debug):
-                    print('Avanzó')
-                    print('Chequeando si llegó al final..')
                 if (self.termino()):
-                    if (self.ultra_debug):
-                        print('Llegó al final. La Rana debe morir!')
                     self.marcar_fin()
-                else:
-                    if (self.ultra_debug):
-                        print('Todavía no le llegó la hora')
-            else:
-                if (self.ultra_debug):
-                    print('No le corresponde avanzar')
-            if (self.ultra_debug):
-                print('Liberando el lock..')
             self.lock.release()
         if (self.debug):
             print('{} finalizó'.format(self.name))
