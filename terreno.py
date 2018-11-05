@@ -1,7 +1,8 @@
 from espacio_vacio import EspacioVacio
 
 class Terreno:
-    def __init__(self):
+    def __init__(self, debug):
+        self.debug = debug
         self.slotsDerechos = []
         self.slotsIzquierdos = []
         self.slots = []
@@ -136,6 +137,8 @@ class Terreno:
         print('{:3}) '.format(self.get_cantidad_movidas()), end='')
         for slot in self.slots:
             print('  {}  '.format(slot), end='')
+        if (self.debug):
+            input('')
         print()
     
     def get_cantidad_movidas(self):

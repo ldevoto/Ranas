@@ -19,7 +19,7 @@ if __name__ == '__main__':
     else:
         cantidadD = int(input("Ingrese cantidad de Ranas para el lado derecho: "))
         cantidadI = int(input("Ingrese cantidad de Ranas para el lado izquierdo: "))
-    terreno = Terreno()
+    terreno = Terreno(DEBUG)
     for i in range(cantidadI):
         rana = Rana(slots_lock, 'Rana Izquierda {}'.format(i+1), i, Derecha(), terreno, DEBUG)
         ranas.append(rana)
