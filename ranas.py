@@ -33,7 +33,8 @@ class Rana(Thread):
                         print('Llegó al final. La Rana debe morir!')
                     self.marcar_fin()
                 else:
-                    print('Todavía no le llegó la hora')
+                    if (self.ultra_debug):
+                        print('Todavía no le llegó la hora')
             else:
                 if (self.ultra_debug):
                     print('No le corresponde avanzar')
