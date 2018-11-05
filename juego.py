@@ -12,7 +12,6 @@ if __name__ == '__main__':
     os.system('clear')
     init(autoreset=True)
     ranas = []
-    slots_lock = Lock()
     if (TIPO_JUEGO == 1):
         cantidadD = int(input("Ingrese cantidad de Ranas de cada lado: "))
         cantidadI = cantidadD
